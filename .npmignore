@@ -1,0 +1,17 @@
+# Các file không cần đưa lên NPM để giảm dung lượng package
+node_modules/
+.git/
+.husky/
+.agent/memory/        # Không đưa dữ liệu cache/memory cá nhân lên
+.env                  # TUYỆT ĐỐI không đưa API KEY cá nhân lên
+package-lock.json
+*.log
+tmp/
+.vscode/
+.gemini/
+scripts/              # Script nội bộ của sếp
+README_OLD.md
+*.webp                # Ảnh demo không cần thiết
+walkthrough.md
+task.md
+implementation_plan.md
