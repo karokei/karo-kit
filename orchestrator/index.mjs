@@ -3,20 +3,29 @@ import path from "path";
 import fetch from "node-fetch";
 import { saveToMemory, searchMemory, getEmbedding } from "./memory.mjs";
 
-const WORKFLOW_DIR = path.resolve("./.agent/workflows");
+const PROJECT_ROOT = process.cwd();
+const AGENT_DIR = path.join(PROJECT_ROOT, ".agent");
+const WORKFLOW_DIR = path.join(AGENT_DIR, "workflows");
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 
 function loadWorkflow(name) {
+  if (!fs.existsSync(AGENT_DIR)) {
+    throw new Error(`\n❌ Không tìm thấy thư mục .agent tại: ${PROJECT_ROOT}\n💡 Sếp vui lòng chạy lệnh "karo init" trước để khởi tạo bộ não cho dự án nhé! 🫡🔥\n`);
+  }
+
   let file = path.join(WORKFLOW_DIR, `${name}.md`);
   if (!fs.existsSync(file)) {
     // Thử thêm prefix 'karo-' nếu sếp quên
     file = path.join(WORKFLOW_DIR, `karo-${name}.md`);
   }
-  if (!fs.existsSync(file)) throw new Error(`Workflow '${name}' không tồn tại trong danh sách Karo.`);
+  if (!fs.existsSync(file)) {
+    throw new Error(`\n❌ Workflow "${name}" không tồn tại trong danh sách Karo Kit.\n📂 Vị trí kiểm tra: ${WORKFLOW_DIR}\n💡 Sếp kiểm tra lại tên file trong thư mục .agent/workflows nhé! 🕵️‍♂️🔍\n`);
+  }
   return fs.readFileSync(file, "utf-8");
 }
+
 
 function parseSteps(content) {
   return content.split("\n").filter(l => l.includes("karo-"));

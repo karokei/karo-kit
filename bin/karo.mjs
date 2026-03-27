@@ -2,7 +2,7 @@
 
 import { execSync } from 'child_process';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,8 +18,9 @@ const DOCTOR_PATH = path.join(__dirname, '..', '.agent', 'scripts', 'karo_doctor
 switch (command) {
   case 'init':
     console.log('🚀 Khởi tạo Karo Agent cho dự án mới...');
-    import(INIT_PATH);
+    import(pathToFileURL(INIT_PATH).href);
     break;
+
 
   case 'start':
     const workflow = args[1] || 'build-system';
