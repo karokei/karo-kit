@@ -39,7 +39,7 @@ switch (command) {
   case 'help':
   default:
     console.log(`
-🌟 KARO KIT CLI v1.0.0 🌟
+🌟 KARO KIT CLI v1.4.0 🌟
 
 Sử dụng: karo <lệnh> [tham số]
 

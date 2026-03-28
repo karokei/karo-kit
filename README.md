@@ -1,17 +1,17 @@
-# 👑 Karo Kit v4.0: The Modular AI Orchestrator 🚀
+# 👑 Karo Kit v1.4.0: The Modular AI Orchestrator 🚀
 
 [![NPM Version](https://img.shields.io/npm/v/karo-kit?color=magenta&style=for-the-badge)](https://www.npmjs.com/package/karo-kit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Engine: Gemini](https://img.shields.io/badge/Engine-Gemini_Pro-blue?style=for-the-badge)](https://ai.google.dev/)
 
-**Karo Kit** không chỉ là một CLI tool, đây là một hệ sinh thái **AI Agentic System** siêu cấp. Được xây dựng dựa trên tinh hoa của các hệ thống AI tiên tiến nhất (như CodyMaster), Karo Kit mang lại khả năng điều phối, tự học và kiểm soát chất lượng phần mềm hoàn toàn tự động cho sếp.
+**Karo Kit** không chỉ là một CLI tool, đây là một hệ sinh thái **AI Agentic System** siêu cấp. Mang lại khả năng điều phối, tự học và kiểm soát chất lượng phần mềm hoàn toàn tự động cho sếp.
 
 ---
 
-## ✨ Điểm tinh hoa v4.0 (Elite Features)
+## ✨ Điểm tinh hoa v1.4.0 (Elite Features)
 
 ### 🧱 Modular Skill Architecture
-Thay vì các quy trình phẳng, Karo v4.0 chia nhỏ năng lực thành các **Skill Modules** (tọa lạc tại thư mục `skills/`). Mỗi kỹ năng có một **Protocol (Giao thức)** riêng biệt, giúp Agent xử lý công việc cực kỳ chuẩn xác và dễ dàng mở rộng.
+Thay vì các quy trình phẳng, Karo v1.4.0 chia nhỏ năng lực thành các **Skill Modules** (tọa lạc tại thư mục `skills/`). Mỗi kỹ năng có một **Protocol (Giao thức)** riêng biệt, giúp Agent xử lý công việc cực kỳ chuẩn xác và dễ dàng mở rộng.
 
 ### ⚖️ The Judge Review (Cơ chế Giám khảo)
 Mọi tác vụ của Karo đều phải đi qua lớp kiểm định cuối cùng của **Judge Agent**. Chỉ khi kết quả đạt chuẩn "Senior Quality", Agent mới coi là hoàn thành nhiệm vụ. Sếp hoàn toàn có thể yên tâm về chất lượng code bàn giao.
@@ -66,4 +66,4 @@ Sếp có thể sử dụng lệnh `karo` từ bất kỳ đâu:
 > [!TIP]
 > **Antigravity AI**: "Chúng em không chỉ viết code, chúng em xây dựng tương lai cùng sếp!"
 
-*Bản quyền thuộc về **Karo Kei**. Chúc sếp có những trải nghiệm bùng nổ cùng Karo Agent v4.0! 🫡🔥⚡*
+*Bản quyền thuộc về **Karo Kei**. Chúc sếp có những trải nghiệm bùng nổ cùng Karo Agent v1.4.0! 🫡🔥⚡*
