@@ -1,4 +1,4 @@
-# 👑 Karo Kit v1.5.0: The Modular AI Orchestrator 🚀
+# 👑 Karo Kit v1.5.1: The Modular AI Orchestrator 🚀
 
 [![NPM Version](https://img.shields.io/npm/v/karo-kit?color=magenta&style=for-the-badge)](https://www.npmjs.com/package/karo-kit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
@@ -8,7 +8,7 @@
 
 ---
 
-## ✨ Điểm tinh hoa v1.5.0 (Elite Features)
+## ✨ Điểm tinh hoa v1.5.1 (Elite Features)
 
 ### 🧱 Modular Skill Architecture
 Thay vì các quy trình phẳng, Karo v1.5.0 chia nhỏ năng lực thành các **Skill Modules** (tọa lạc tại thư mục `skills/`). Mỗi kỹ năng có một **Protocol (Giao thức)** riêng biệt, giúp Agent xử lý công việc cực kỳ chuẩn xác và dễ dàng mở rộng.
@@ -37,9 +37,10 @@ npm install -g karo-kit
 Sếp có thể sử dụng lệnh `karo` từ bất kỳ đâu:
 
 1.  **`karo init`**: Khởi tạo "Bộ não" Agent (.agent) và quy trình chuẩn vào dự án của sếp.
-2.  **`karo start <skill>`**: Kích hoạt một kỹ năng siêu cấp (Ví dụ: `karo start fix-bug`).
-3.  **`karo dashboard`**: Mở dashboard trực quan để theo dõi Agent "đang nghĩ gì".
-4.  **`karo help`**: Xem hướng dẫn chi tiết các lệnh.
+2.  **`karo wake up`**: Đánh thức Karo Agent để chat trực tiếp (Hỗ trợ hội thoại đa lượt).
+3.  **`karo start <skill>`**: Kích hoạt một kỹ năng siêu cấp (Ví dụ: `karo start fix-bug`).
+4.  **`karo dashboard`**: Mở dashboard trực quan để theo dõi Agent "đang nghĩ gì".
+5.  **`karo update`**: Kiểm tra và cập nhật Karo Kit lên bản mới nhất.
 
 ---
 
@@ -66,4 +67,4 @@ Sếp có thể sử dụng lệnh `karo` từ bất kỳ đâu:
 > [!TIP]
 > **Antigravity AI**: "Chúng em không chỉ viết code, chúng em xây dựng tương lai cùng sếp!"
 
-*Bản quyền thuộc về **Karo Kei**. Chúc sếp có những trải nghiệm bùng nổ cùng Karo Agent v1.5.0! 🫡🔥⚡*
+*Bản quyền thuộc về **Karo Kei**. Chúc sếp có những trải nghiệm bùng nổ cùng Karo Agent v1.5.1! 🫡🔥⚡*

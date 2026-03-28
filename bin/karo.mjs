@@ -18,6 +18,7 @@ const DASHBOARD_PATH = path.join(__dirname, '..', 'orchestrator', 'dashboard.mjs
 const INIT_PATH = path.join(__dirname, '..', 'orchestrator', 'init.mjs');
 const DOCTOR_PATH = path.join(__dirname, '..', '.agent', 'scripts', 'karo_doctor.py');
 const PACKAGE_JSON_PATH = path.join(__dirname, '..', 'package.json');
+const WAKE_UP_PATH = path.join(__dirname, '..', 'orchestrator', 'wake_up.mjs');
 
 const packageJson = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf-8'));
 const currentVersion = packageJson.version;
@@ -59,6 +60,14 @@ switch (command) {
     checkForUpdate(false); // 🕵️‍♂️ Kiểm tra chi tiết
     break;
 
+  case 'wake':
+    if (args[1] === 'up') {
+      import(pathToFileURL(WAKE_UP_PATH).href);
+    } else {
+      console.log(chalk.yellow('💡 Sếp muốn em thức dậy chứ? Hãy gõ "karo wake up" sếp nhé! 🫡🔥'));
+    }
+    break;
+
   case 'start':
     checkForUpdate(true); // 🤫 Kiểm tra âm thầm
     const workflow = args[1] || 'build-system';
@@ -79,13 +88,14 @@ switch (command) {
   case 'help':
   default:
     console.log(`
-🌟 KARO KIT CLI v1.4.0 🌟
+🌟 KARO KIT CLI v1.5.1 🌟
 
 Sử dụng: karo <lệnh> [tham số]
 
 Các lệnh hỗ trợ:
   init          Khởi tạo Karo Agent (.agent folder) vào dự án hiện tại.
   start <wf>    Chạy một Karo Workflow (vd: karo start fix-bug "lỗi CSS").
+  wake up       Đánh thức Karo Agent để chat trực tiếp và ra lệnh.
   dashboard     Mở Dashboard Premium trực quan.
   doctor        Kiểm tra sức khỏe hệ thống Karo.
   update        Kiểm tra và cập nhật lên Karo Kit mới nhất.
