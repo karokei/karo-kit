@@ -1,6 +1,6 @@
 {
   "name": "karo-kit",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "type": "module",
   "bin": {
     "karo": "./bin/karo.mjs"
