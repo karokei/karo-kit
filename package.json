@@ -8,6 +8,7 @@
   "files": [
     "bin",
     ".agent",
+    "skills",
     "orchestrator",
     "package.json",
     "README.md"

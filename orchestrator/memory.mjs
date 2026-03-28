@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 
 const MEMORY_FILE = path.join('.agent', 'memory', 'knowledge_base.json');
+const CONTINUITY_FILE = 'CONTINUITY.md';
+const LEARNINGS_FILE = path.join('.agent', 'memory', 'learnings.json');
 
 export async function getEmbedding(text) {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -55,4 +57,43 @@ export async function searchMemory(query, limit = 3) {
   .slice(0, limit);
 
   return results;
+}
+
+export function updateContinuity(taskState) {
+  const content = `# Karo Working Memory (CONTINUITY)
+> Trạng thái hiện tại của Task - Đừng bao gồm các bước đã fail lặp lại.
+
+## Hiện tại Agent đang làm gì:
+${taskState.currentTask || 'N/A'}
+
+## Các bước đã thực hiện:
+${taskState.steps?.map(s => `- [${s.status === 'done' ? 'x' : ' '}] ${s.desc}`).join('\n') || 'N/A'}
+
+## Ghi chú quan trọng:
+${taskState.notes || 'N/A'}
+
+---
+*Cập nhật lần cuối: ${new Date().toLocaleString()}*
+`;
+  fs.writeFileSync(CONTINUITY_FILE, content);
+}
+
+export function readContinuity() {
+  if (!fs.existsSync(CONTINUITY_FILE)) return null;
+  return fs.readFileSync(CONTINUITY_FILE, 'utf-8');
+}
+
+export function saveLearnings(fact) {
+  let learnings = [];
+  if (fs.existsSync(LEARNINGS_FILE)) {
+    learnings = JSON.parse(fs.readFileSync(LEARNINGS_FILE, 'utf-8'));
+  }
+  learnings.push({
+    fact,
+    timestamp: new Date().toISOString()
+  });
+  if (!fs.existsSync(path.dirname(LEARNINGS_FILE))) {
+    fs.mkdirSync(path.dirname(LEARNINGS_FILE), { recursive: true });
+  }
+  fs.writeFileSync(LEARNINGS_FILE, JSON.stringify(learnings, null, 2));
 }

@@ -1,34 +1,36 @@
 import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
-import { saveToMemory, searchMemory, getEmbedding } from "./memory.mjs";
+import { saveToMemory, searchMemory, getEmbedding, updateContinuity, readContinuity, saveLearnings } from "./memory.mjs";
 
 const PROJECT_ROOT = process.cwd();
 const AGENT_DIR = path.join(PROJECT_ROOT, ".agent");
-const WORKFLOW_DIR = path.join(AGENT_DIR, "workflows");
+const SKILLS_DIR = path.join(PROJECT_ROOT, "skills");
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 
-function loadWorkflow(name) {
-  if (!fs.existsSync(AGENT_DIR)) {
-    throw new Error(`\n❌ Không tìm thấy thư mục .agent tại: ${PROJECT_ROOT}\n💡 Sếp vui lòng chạy lệnh "karo init" trước để khởi tạo bộ não cho dự án nhé! 🫡🔥\n`);
-  }
+function loadSkill(name) {
+  let skillName = name.startsWith('karo-') ? name : `karo-${name}`;
+  let skillDir = path.join(SKILLS_DIR, skillName);
+  let file = path.join(skillDir, "SKILL.md");
 
-  let file = path.join(WORKFLOW_DIR, `${name}.md`);
   if (!fs.existsSync(file)) {
-    // Thử thêm prefix 'karo-' nếu sếp quên
-    file = path.join(WORKFLOW_DIR, `karo-${name}.md`);
-  }
-  if (!fs.existsSync(file)) {
-    throw new Error(`\n❌ Workflow "${name}" không tồn tại trong danh sách Karo Kit.\n📂 Vị trí kiểm tra: ${WORKFLOW_DIR}\n💡 Sếp kiểm tra lại tên file trong thư mục .agent/workflows nhé! 🕵️‍♂️🔍\n`);
+    throw new Error(`\n❌ Không tìm thấy kỹ năng "${name}" tại: ${skillDir}\n💡 Sếp kiểm tra lại thư mục skills/ nhé! 🕵️‍♂️🔍\n`);
   }
   return fs.readFileSync(file, "utf-8");
 }
 
 
 function parseSteps(content) {
-  return content.split("\n").filter(l => l.includes("karo-"));
+  // Tìm các dòng bắt đầu bằng số trong mục Protocol
+  const protocolMatch = content.match(/## Protocol([\s\S]*?)(##|$)/);
+  if (!protocolMatch) return content.split("\n").filter(l => l.includes("karo-"));
+  
+  return protocolMatch[1]
+    .split("\n")
+    .map(line => line.trim())
+    .filter(line => /^\d+\./.test(line));
 }
 
 async function geminiReason(prompt) {
@@ -64,15 +66,31 @@ async function runStep(step, context) {
 }
 
 async function runWorkflow(name, input) {
-  console.log(`🚀 Khởi chạy Karo Workflow: ${name}`);
+  console.log(`🚀 Khởi chạy Karo Skill: ${name}`);
 
-  const content = loadWorkflow(name);
+  const content = loadSkill(name);
   const steps = parseSteps(content);
 
-  let context = { input, history: [] };
+  const existingContinuity = readContinuity();
+  let context = { 
+    input, 
+    history: [],
+    continuity: existingContinuity // 🧠 Thêm ngữ cảnh từ continuity nếu có
+  };
 
-  for (const step of steps) {
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
     context = await runStep(step, context);
+    
+    // 📝 Cập nhật Working Memory sau mỗi bước
+    updateContinuity({
+      currentTask: name,
+      steps: steps.map((s, idx) => ({ 
+        desc: s, 
+        status: idx <= i ? 'done' : 'pending' 
+      })),
+      notes: `Đang thực hiện bước ${i+1}/${steps.length}`
+    });
   }
 
   // 💾 Ghi nhớ kết quả workflow này để lần sau dùng lại
@@ -80,6 +98,16 @@ async function runWorkflow(name, input) {
     const embedding = await getEmbedding(entry.step);
     saveToMemory({ step: entry.step, decision: entry.decision, embedding });
   }
+
+  // ⚖️ THE JUDGE REVIEW
+  console.log("\n⚖️ Đang gọi Judge Agent để review kết quả cuối cùng...");
+  const judgeVerdict = await geminiReason(
+    `BẠN LÀ JUDGE AGENT. Hãy review quá trình và kết quả sau:\nTask: ${name}\nInput: ${input}\nLịch sử thực thi: ${JSON.stringify(context.history)}\n\nHãy đưa ra nhận xét ngắn gọn và kết luận đạt (PASS) hay không (FAIL).`
+  );
+  console.log(`👨‍⚖️ Kết luận của Judge: ${judgeVerdict}`);
+
+  // 🎓 Lưu bài học kinh nghiệm tổng thể
+  saveLearnings(`Skill "${name}" hoàn tất. Judge Verdict: ${judgeVerdict.slice(0, 50)}...`);
 
   console.log("✅ Hoàn tất và đã ghi nhớ kinh nghiệm.");
   return context;
